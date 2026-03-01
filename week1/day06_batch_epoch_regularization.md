@@ -58,12 +58,6 @@
    - PyTorch：`torch.optim.lr_scheduler.StepLR`、`CosineAnnealingLR` 等  
    - 练习：用 `StepLR` 每 5 个 epoch 将 lr 乘 0.5
 
-5. **与 Day 5 的衔接**（5 分钟）  
-   - Day 5 的线性回归是「全量」或「单 batch」  
-   - 真实训练：`for batch in dataloader:` 遍历多个 batch  
-   - 每个 batch 做一次：zero_grad → 前向 → backward → step  
-   - 练习：写出「多 epoch + 多 batch」的训练循环框架
-
 ### 1.3 参考资料
 
 | 类型 | 资源 | 链接/获取方式 | 建议用法 |

@@ -8,9 +8,9 @@
 
 | 时段 | 内容 | 时长 |
 |------|------|------|
-| 0:00–0:55 | 第一部分：LLM 训练流程（多阶段→PT→SFT→RLHF→与 verl 衔接） | 55 分钟 |
+| 0:00–0:55 | 第一部分：LLM 训练流程（多阶段→PT→SFT→RLHF） | 55 分钟 |
 | 0:55–1:00 | 休息 | 5 分钟 |
-| 1:00–1:55 | 第二部分：Tokenization 与生成（分词→input_ids/attention_mask→自回归生成→代码过一遍→verl 衔接） | 55 分钟 |
+| 1:00–1:55 | 第二部分：Tokenization 与生成（分词→input_ids/attention_mask→自回归生成→代码过一遍） | 55 分钟 |
 | 1:55–2:00 | 自测题与检查清单 | 5 分钟 |
 
 **预计总时长：2 小时**
@@ -49,11 +49,6 @@
    - 三阶段概览：SFT → 训练 Reward Model（偏好数据）→ 用 RL（如 PPO）优化策略  
    - RLHF 解决什么问题：让模型输出更符合人类偏好（更有用、无害、诚实），而不仅是「模仿」SFT 数据  
    - 练习：能说明 SFT 和 RLHF 分别解决什么问题（见自测题）
-
-5. **与 Day08 / verl 衔接**（5 分钟）  
-   - Transformer Decoder 是 LLM 的骨架，PT/SFT/RLHF 是不同训练目标，模型结构相同  
-   - verl 做的是 RLHF 阶段的训练（PPO、GRPO 等），不做 PT，常用 SFT 模型作为初始策略  
-   - 练习：verl 主要对应三阶段中的哪一阶段？
 
 ### 1.3 参考资料
 
@@ -117,10 +112,6 @@
    - 结合 [day08_llm_inference_demo.ipynb](day08_llm_inference_demo.ipynb) 或 HuggingFace 文档  
    - 看 `tokenizer(text, return_tensors="pt")` 的返回；看 `model.generate()` 的输入（input_ids 等）和输出（生成的 token ids）  
    - 练习：不加载模型，仅用 tokenizer 对一句话 encode 再 decode，确认能还原
-
-5. **与 verl 的衔接**（5 分钟）  
-   - verl 里 rollout：把 prompt tokenize 后送入策略模型，自回归生成 response；reward 通常基于生成的文本或 token 序列计算  
-   - 练习：说出「从用户输入到 reward」在 verl 中的大致数据流（prompt → tokenize → generate → response 文本 → reward）
 
 ### 2.3 参考资料
 

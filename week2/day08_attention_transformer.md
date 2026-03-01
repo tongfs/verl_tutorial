@@ -26,7 +26,7 @@
 | Query 查询 | 当前要关注的「问题」向量 | 每个 token 生成自己的 Q，用于检索相关信息 |
 | Key 键 | 被查询的「索引」向量 | 每个 token 的 K，用于与 Q 计算相似度 |
 | Value 值 | 实际要取用的「内容」向量 | 根据注意力权重加权求和得到输出 |
-| Scaled Dot-Product Attention | Attention(Q,K,V) = softmax(QK^T/√d_k)V | LLM 的核心计算，verl 训练的就是包含它的模型 |
+| Scaled Dot-Product Attention | $\text{Attention}(Q,K,V) = \text{softmax}(QK^T/\sqrt{d_k})V$ | LLM 的核心计算，verl 训练的就是包含它的模型 |
 | 注意力权重 | softmax 后的概率分布，表示「关注谁」 | 决定每个位置对当前输出的贡献 |
 
 ### 1.2 建议学习顺序
@@ -44,22 +44,17 @@
    - 练习：若序列长度 n=5，Q、K、V 的 shape 各是什么？（通常 (batch, n, d)）
 
 3. **Scaled Dot-Product Attention 公式**（20 分钟）  
-   - 评分：score = QK^T，表示 Q 与每个 K 的相似度  
-   - 缩放：除以 √d_k，防止 d_k 大时 softmax 梯度消失  
-   - 权重：α = softmax(score / √d_k)  
-   - 输出：Output = αV，即按权重对 V 加权求和  
-   - 练习：写出完整的 Attention(Q,K,V) 公式（一行）
+   - 评分：$\text{score} = QK^T$，表示 Q 与每个 K 的相似度  
+   - 缩放：除以 $\sqrt{d_k}$，防止 $d_k$ 大时 softmax 梯度消失  
+   - 权重：$\alpha = \text{softmax}(\text{score} / \sqrt{d_k})$  
+   - 输出：$\text{Output} = \alpha V$，即按权重对 V 加权求和  
+   - 练习：写出完整的 $\text{Attention}(Q,K,V)$ 公式（一行）
 
 4. **Self-Attention 自注意力**（10 分钟）  
    - Q、K、V 都来自同一输入序列（不同线性变换）  
    - 每个位置可以「看到」并关注序列中所有位置  
    - 与 Cross-Attention 区别：后者 Q 来自一个序列，K/V 来自另一个  
    - 练习：Self-Attention 中，若输入是「我 喜欢 猫」，每个词会关注哪些词？
-
-5. **与第一周的衔接**（5 分钟）  
-   - 注意力输出仍是向量，可接全连接层（FFN）  
-   - 训练方式相同：前向 → loss → backward → 更新  
-   - 练习：注意力层和 nn.Linear 的输入输出形式有何不同？
 
 ### 1.3 参考资料
 
@@ -79,20 +74,20 @@
 **自测题**  
 1. 在 Self-Attention 中，Q、K、V 从哪里来？它们的关系是什么？  
 2. 写出 Scaled Dot-Product Attention 的完整公式（含 softmax 和缩放）。  
-3. 为什么除以 √d_k？不除以会有什么问题？
+3. 为什么除以 $\sqrt{d_k}$？不除以会有什么问题？
 
 <details>
 <summary>点击展开参考答案</summary>
 
 1. Q、K、V 都由输入 X 通过线性变换得到：Q=XW_Q、K=XW_K、V=XW_V；三者都来自同一输入，但通过不同权重矩阵投影。  
-2. Attention(Q,K,V) = softmax(QK^T / √d_k) V  
-3. d_k 大时，QK^T 的值会很大，softmax 后梯度接近 0，导致梯度消失；除以 √d_k 使数值稳定。
+2. $\text{Attention}(Q,K,V) = \text{softmax}(QK^T / \sqrt{d_k}) V$  
+3. $d_k$ 大时，$QK^T$ 的值会很大，softmax 后梯度接近 0，导致梯度消失；除以 $\sqrt{d_k}$ 使数值稳定。
 </details>
 
 **检查清单**  
 - [ ] 能解释 Query、Key、Value 的含义及在注意力中的作用  
 - [ ] 能写出 Scaled Dot-Product Attention 的公式  
-- [ ] 能解释为什么需要除以 √d_k  
+- [ ] 能解释为什么需要除以 $\sqrt{d_k}$  
 
 ---
 
@@ -126,9 +121,9 @@
 
 3. **Multi-Head Attention**（15 分钟）  
    - 把 Q、K、V 拆成 h 个头，每个头独立做 Attention  
-   - 输出：Concat(head_1,...,head_h) → 线性变换  
+   - 输出：$\text{Concat}(\text{head}_1,\ldots,\text{head}_h) \to$ 线性变换  
    - 作用：不同头可关注不同模式（如语法、指代、语义）  
-   - 练习：8 个头、d_model=64，每个头的 d_k 是多少？（64/8=8）
+   - 练习：8 个头、$d_{\text{model}}=64$，每个头的 $d_k$ 是多少？（64/8=8）
 
 4. **FFN 与 LayerNorm**（5 分钟）  
    - FFN：通常 d_model → 4×d_model → d_model，中间用 GELU  
@@ -159,14 +154,14 @@
 **自测题**  
 1. 能画出 Transformer Decoder 的一个 block，并标出 Multi-Head Attention、FFN、LayerNorm、Residual 的位置。  
 2. Encoder 和 Decoder 的注意力机制有何本质区别？  
-3. 若 d_model=256、head=8，每个头的 d_k 和 d_v 是多少？
+3. 若 $d_{\text{model}}=256$、$\text{head}=8$，每个头的 $d_k$ 和 $d_v$ 是多少？
 
 <details>
 <summary>点击展开参考答案</summary>
 
 1. 框图：输入 → [Multi-Head Attention + Residual + LayerNorm] → [FFN + Residual + LayerNorm] → 输出  
 2. Encoder 双向：每个位置可看所有位置；Decoder 因果：位置 i 只能看 1,…,i，用于自回归生成。  
-3. d_k = d_v = d_model / head = 256 / 8 = 32
+3. $d_k = d_v = d_{\text{model}} / \text{head} = 256 / 8 = 32$
 </details>
 
 **检查清单**  
