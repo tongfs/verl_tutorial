@@ -1,6 +1,19 @@
 # Day 4 详细学习指南：PyTorch 基础（上）——张量与自动求导
 
-> 预计时长：2 小时 | 目标：会用 PyTorch 定义张量、做运算、自动求导
+> 目标：会用 PyTorch 定义张量、做运算、自动求导
+
+---
+
+## 学习时间分配建议
+
+| 时段 | 内容 | 时长 |
+|------|------|------|
+| 0:00–0:55 | 第一部分：PyTorch 张量与运算（创建→属性→device→reshape→矩阵运算） | 55 分钟 |
+| 0:55–1:00 | 休息 | 5 分钟 |
+| 1:00–1:55 | 第二部分：自动求导（requires_grad→backward→链式验证→梯度累积→no_grad） | 55 分钟 |
+| 1:55–2:00 | 自测与检查（重点：用 PyTorch 实现简单函数并求梯度） | 5 分钟 |
+
+**预计总时长：2 小时**
 
 ---
 
@@ -61,6 +74,35 @@
 - **Tensors**：完整阅读，边看边在 Jupyter/Python 里敲
 - **Datasets & DataLoaders**：可略过或快速浏览，Day 5 会用到
 
+### 1.4 自测与检查
+
+**自测题**  
+1. 创建一个形状为 (2, 3, 4) 的张量，用 `reshape` 变成 (6, 4)。  
+2. 写出把张量 `x` 从 CPU 移到 GPU 的代码（若可用）。  
+3. 计算 `A @ B`：A 形状 (2, 3)，B 形状 (3, 4)，结果形状是多少？
+
+<details>
+<summary>点击展开参考答案</summary>
+
+```python
+import torch
+# 1
+x = torch.randn(2, 3, 4)
+y = x.reshape(6, 4)
+# 2
+x = x.to('cuda')  # 或 x.cuda()
+# 3
+A = torch.randn(2, 3)
+B = torch.randn(3, 4)
+C = A @ B  # 形状 (2, 4)
+```
+</details>
+
+**检查清单**  
+- [ ] 能创建张量并指定 dtype、device  
+- [ ] 能使用 reshape/view 改变张量形状  
+- [ ] 能区分逐元素运算与矩阵乘法 `@`  
+
 ---
 
 ## 二、第二部分：自动求导 autograd（约 1 小时）
@@ -111,49 +153,15 @@
 | 官方文档 | torch.autograd | https://pytorch.org/docs/stable/autograd.html | 查阅 API |
 | 文字 | 《动手学深度学习》自动求导 | https://zh.d2l.ai/chapter_preliminaries/autograd.html | 配合代码 |
 
----
+### 2.4 自测与检查
 
-## 三、自测题
-
-### 3.1 张量自测
-
-1. 创建一个形状为 (2, 3, 4) 的张量，用 `reshape` 变成 (6, 4)。
-2. 写出把张量 `x` 从 CPU 移到 GPU 的代码（若可用）。
-3. 计算 `A @ B`：A 形状 (2, 3)，B 形状 (3, 4)，结果形状是多少？
-
-### 3.2 自动求导自测（重点）
-
-1. **用 PyTorch 求梯度**：设 `f(x) = x² + 2x`，在 x=3 处求 df/dx。  
-   **提示**：创建 x=3.0、requires_grad=True，算 y，backward，打印 x.grad。  
-   **答案**：2x+2 = 8
-
-2. **多元函数**：设 `f(x, y) = x²y`，x=2, y=3。求 ∂f/∂x 和 ∂f/∂y。  
-   **提示**：两个 requires_grad 的张量，L.backward() 后分别看 x.grad、y.grad。  
-   **答案**：∂f/∂x=2xy=12，∂f/∂y=x²=4
-
-3. **完整代码**：写一段不超过 10 行的代码，对 `z = x*y + x**2` 在 x=1, y=2 处求 ∂z/∂x 和 ∂z/∂y。
-
-### 3.3 参考答案
+**自测题**  
+1. 用 PyTorch 求梯度：设 `f(x) = x² + 2x`，在 x=3 处求 df/dx。（答案：2x+2 = 8）  
+2. 多元函数：设 `f(x, y) = x²y`，x=2, y=3。求 ∂f/∂x 和 ∂f/∂y。（答案：∂f/∂x=12，∂f/∂y=4）  
+3. 写一段不超过 10 行的代码，对 `z = x*y + x**2` 在 x=1, y=2 处求 ∂z/∂x 和 ∂z/∂y。
 
 <details>
-<summary>点击展开 张量自测答案</summary>
-
-```python
-import torch
-# 1
-x = torch.randn(2, 3, 4)
-y = x.reshape(6, 4)
-# 2
-x = x.to('cuda')  # 或 x.cuda()
-# 3
-A = torch.randn(2, 3)
-B = torch.randn(3, 4)
-C = A @ B  # 形状 (2, 4)
-```
-</details>
-
-<details>
-<summary>点击展开 自动求导自测答案</summary>
+<summary>点击展开参考答案</summary>
 
 ```python
 import torch
@@ -179,37 +187,17 @@ print(x.grad, y.grad)  # tensor(4.) tensor(1.)
 ```
 </details>
 
----
-
-## 四、学习时间分配建议
-
-| 时段 | 内容 | 时长 |
-|------|------|------|
-| 0:00–0:55 | PyTorch 张量与运算（创建→属性→device→reshape→矩阵运算） | 55 分钟 |
-| 0:55–1:00 | 休息 | 5 分钟 |
-| 1:00–1:55 | 自动求导（requires_grad→backward→链式验证→梯度累积→no_grad） | 55 分钟 |
-| 1:55–2:00 | 完成自测题（重点：用 PyTorch 实现简单函数并求梯度） | 5 分钟 |
+**检查清单**  
+- [ ] 能对 `requires_grad=True` 的张量做运算并调用 `backward()`  
+- [ ] 能解释 `.grad` 的含义及梯度累积问题  
+- [ ] 能用 PyTorch 对简单函数（如 x²、x²y）求梯度  
+- [ ] 完成全部自测题  
 
 ---
 
-## 五、今日学习检查清单
-
-- [ ] 能创建张量并指定 dtype、device
-- [ ] 能使用 reshape/view 改变张量形状
-- [ ] 能区分逐元素运算与矩阵乘法 `@`
-- [ ] 能对 `requires_grad=True` 的张量做运算并调用 `backward()`
-- [ ] 能解释 `.grad` 的含义及梯度累积问题
-- [ ] 能用 PyTorch 对简单函数（如 x²、x²y）求梯度
-- [ ] 完成全部自测题
-
----
-
-## 六、与前后天的衔接
-
-- **Day 2**：手算梯度；今天用 PyTorch 自动算，结果应对应。
-- **Day 3**：反向传播的数学；今天 `backward()` 就是在做反向传播。
-- **Day 5**：用 `nn.Module` 和 `optimizer` 写训练循环，`loss.backward()` 和 `optimizer.step()` 会用到今天的知识。
-
----
+**与前后天的衔接**
+- **Day 2**：手算梯度，今天用 PyTorch 自动算。
+- **Day 3**：反向传播数学对应今天的 `backward()`。
+- **Day 5**：写训练循环时会用到 `loss.backward()` 和 `optimizer.step()`。
 
 *完成 Day 4 后，可以进入 Day 5：PyTorch 基础（下）——nn.Module 与训练循环。*

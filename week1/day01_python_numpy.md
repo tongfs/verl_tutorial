@@ -1,6 +1,19 @@
 # Day 1 详细学习指南：Python 与 NumPy
 
-> 预计时长：2 小时 | 目标：能写简单脚本、会用 NumPy 做矩阵运算
+> 目标：能写简单脚本、会用 NumPy 做矩阵运算
+
+---
+
+## 学习时间分配建议
+
+| 时段 | 内容 | 时长 |
+|------|------|------|
+| 0:00–0:50 | 第一部分：Python 基础（按 1.2 顺序学习） | 50 分钟 |
+| 0:50–1:00 | 休息 | 10 分钟 |
+| 1:00–1:50 | 第二部分：NumPy 入门（按 2.2 顺序学习） | 50 分钟 |
+| 1:50–2:00 | 自测与检查 | 10 分钟 |
+
+**预计总时长：2 小时**
 
 ---
 
@@ -58,6 +71,37 @@
 - 第 8 章：Python3 数据结构（列表、字典等）
 - 第 12 章：Python3 面向对象（类的基础）
 
+### 1.4 自测与检查
+
+**自测题**  
+1. 用字典表示：`{"model": "llama", "hidden_size": 4096}`，并打印 `hidden_size`。  
+2. 写一个函数 `def sum_list(lst):`，返回列表中所有元素的和。  
+3. 定义一个类 `DataBatch`，有 `input_ids` 和 `attention_mask` 两个属性，在 `__init__` 中初始化。
+
+<details>
+<summary>点击展开参考答案</summary>
+
+```python
+# 1. 字典
+config = {"model": "llama", "hidden_size": 4096}
+print(config["hidden_size"])  # 4096
+
+# 2. 求和函数
+def sum_list(lst):
+    return sum(lst)
+
+# 3. DataBatch 类
+class DataBatch:
+    def __init__(self, input_ids, attention_mask):
+        self.input_ids = input_ids
+        self.attention_mask = attention_mask
+```
+</details>
+
+**检查清单**  
+- [ ] 能独立写一个包含列表、字典、函数的 Python 脚本  
+- [ ] 能解释 `list` 和 `dict` 的区别及典型用法  
+
 ---
 
 ## 二、第二部分：NumPy 入门（约 1 小时）
@@ -111,47 +155,15 @@
 - Universal functions（通用函数，了解即可）
 - Linear algebra（线性代数，重点看矩阵乘法）
 
----
+### 2.4 自测与检查
 
-## 三、自测题
-
-### 3.1 Python 自测
-
-1. 用字典表示：`{"model": "llama", "hidden_size": 4096}`，并打印 `hidden_size`。
-2. 写一个函数 `def sum_list(lst):`，返回列表中所有元素的和。
-3. 定义一个类 `DataBatch`，有 `input_ids` 和 `attention_mask` 两个属性，在 `__init__` 中初始化。
-
-### 3.2 NumPy 自测
-
-1. 用 NumPy 实现矩阵乘法：  
-   `A = [[1,2],[3,4]]`，`B = [[5,6],[7,8]]`，计算 `A @ B`。
-2. 创建一个形状为 `(2, 3, 4)` 的数组，用 `reshape` 变成 `(6, 4)`。
+**自测题**  
+1. 用 NumPy 实现矩阵乘法：`A = [[1,2],[3,4]]`，`B = [[5,6],[7,8]]`，计算 `A @ B`。  
+2. 创建一个形状为 `(2, 3, 4)` 的数组，用 `reshape` 变成 `(6, 4)`。  
 3. 给定 `x = np.array([[1,2,3],[4,5,6]])`，计算每行的和（结果为 `[6, 15]`）。
 
-### 3.3 参考答案（先自己做再对照）
-
 <details>
-<summary>点击展开 Python 自测答案</summary>
-
-```python
-# 1. 字典
-config = {"model": "llama", "hidden_size": 4096}
-print(config["hidden_size"])  # 4096
-
-# 2. 求和函数
-def sum_list(lst):
-    return sum(lst)
-
-# 3. DataBatch 类
-class DataBatch:
-    def __init__(self, input_ids, attention_mask):
-        self.input_ids = input_ids
-        self.attention_mask = attention_mask
-```
-</details>
-
-<details>
-<summary>点击展开 NumPy 自测答案</summary>
+<summary>点击展开参考答案</summary>
 
 ```python
 import numpy as np
@@ -172,27 +184,14 @@ row_sum = x.sum(axis=1)  # [6, 15]
 ```
 </details>
 
----
-
-## 四、学习时间分配建议
-
-| 时段 | 内容 | 时长 |
-|------|------|------|
-| 0:00–0:50 | Python 基础（按 1.2 顺序学习） | 50 分钟 |
-| 0:50–1:00 | 休息 | 10 分钟 |
-| 1:00–1:50 | NumPy 入门（按 2.2 顺序学习） | 50 分钟 |
-| 1:50–2:00 | 完成自测题 | 10 分钟 |
+**检查清单**  
+- [ ] 能用 `np.array` 创建数组并做 `reshape`  
+- [ ] 能用手写或查文档的方式完成 `A @ B` 矩阵乘法  
+- [ ] 完成全部自测题（可先做再对答案）  
 
 ---
 
-## 五、今日学习检查清单
-
-- [ ] 能独立写一个包含列表、字典、函数的 Python 脚本
-- [ ] 能解释 `list` 和 `dict` 的区别及典型用法
-- [ ] 能用 `np.array` 创建数组并做 `reshape`
-- [ ] 能用手写或查文档的方式完成 `A @ B` 矩阵乘法
-- [ ] 完成全部自测题（可先做再对答案）
-
----
+**与前后天的衔接**
+- **Day 2**：会用到线性代数与梯度，NumPy 的矩阵乘法会在 Day 2 中理解为线性变换的复合。
 
 *完成 Day 1 后，可以进入 Day 2：线性代数与梯度。*

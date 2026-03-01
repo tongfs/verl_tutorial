@@ -1,6 +1,19 @@
 # Day 5 详细学习指南：PyTorch 基础（下）——nn.Module 与训练循环
 
-> 预计时长：2 小时 | 目标：会用 `nn.Module` 和 `optimizer` 写一个完整训练循环
+> 目标：会用 `nn.Module` 和 `optimizer` 写一个完整训练循环
+
+---
+
+## 学习时间分配建议
+
+| 时段 | 内容 | 时长 |
+|------|------|------|
+| 0:00–0:55 | 第一部分：nn.Module 与 nn.Linear（Linear→继承定义→Sequential→parameters→train/eval） | 55 分钟 |
+| 0:55–1:00 | 休息 | 5 分钟 |
+| 1:00–1:55 | 第二部分：训练循环（损失函数→优化器→四步→线性回归完整示例） | 55 分钟 |
+| 1:55–2:00 | 自测与检查（独立写一遍线性回归脚本） | 5 分钟 |
+
+**预计总时长：2 小时**
 
 ---
 
@@ -55,6 +68,41 @@
 | 官方教程 | PyTorch 构建模型 | https://pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html | 精读 |
 | 官方教程 | torch.nn 是什么 | https://pytorch.org/tutorials/beginner/nn_tutorial.html | 可选，更细 |
 | 中文 | PyTorch 中文文档 | https://docs.pytorch.ac.cn/tutorials/beginner/basics/buildmodel_tutorial.html | 同上，中文版 |
+
+### 1.4 自测与检查
+
+**自测题**  
+1. 定义一个类 `TwoLayerNet`：输入 5 维 → Linear(5, 10) + ReLU → Linear(10, 2)，实现 `forward`。  
+2. 用 `nn.Sequential` 实现同样的网络。  
+3. 写出把模型参数传给 Adam 优化器的代码。
+
+<details>
+<summary>点击展开参考答案</summary>
+
+```python
+import torch.nn as nn
+
+# 1. 继承 nn.Module
+class TwoLayerNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(5, 10)
+        self.fc2 = nn.Linear(10, 2)
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        return self.fc2(x)
+
+# 2. Sequential
+model = nn.Sequential(nn.Linear(5, 10), nn.ReLU(), nn.Linear(10, 2))
+
+# 3. 优化器
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+```
+</details>
+
+**检查清单**  
+- [ ] 能继承 `nn.Module` 定义网络并实现 `forward`  
+- [ ] 能使用 `nn.Linear`、`nn.ReLU`、`nn.Sequential`  
 
 ---
 
@@ -112,9 +160,7 @@
 | 官方教程 | 完整训练流程 | https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html | 可选 |
 | 文字 | 《动手学深度学习》线性回归 | https://zh.d2l.ai/chapter_linear-networks/linear-regression-concise.html | 配合代码 |
 
----
-
-## 三、完整代码示例：线性回归
+**完整代码示例：线性回归**
 
 ```python
 import torch
@@ -147,92 +193,33 @@ print("训练后:", model.weight.item(), model.bias.item())
 # 应接近 2 和 1
 ```
 
----
+### 2.4 自测与检查
 
-## 四、自测题
-
-### 4.1 nn.Module 自测
-
-1. 定义一个类 `TwoLayerNet`：输入 5 维 → Linear(5, 10) + ReLU → Linear(10, 2)，实现 `forward`。
-2. 用 `nn.Sequential` 实现同样的网络。
-3. 写出把模型参数传给 Adam 优化器的代码。
-
-### 4.2 训练循环自测（重点）
-
-1. **四步顺序**：请按正确顺序写出训练循环的四步（用中文或代码均可）。
-2. **为什么需要 zero_grad？** 若忘记调用，会发生什么？
-3. **独立实现**：不参考示例，独立写一个「线性回归」的完整训练脚本（可简化数据）。
-
-### 4.3 参考答案
+**自测题**  
+1. 训练循环四步：请按正确顺序写出（用中文或代码均可）。  
+2. 为什么需要 zero_grad？若忘记调用，会发生什么？  
+3. 不参考示例，独立写一个「线性回归」的完整训练脚本（可简化数据）。
 
 <details>
-<summary>点击展开 nn.Module 自测答案</summary>
-
-```python
-import torch.nn as nn
-
-# 1. 继承 nn.Module
-class TwoLayerNet(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.fc1 = nn.Linear(5, 10)
-        self.fc2 = nn.Linear(10, 2)
-
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        return self.fc2(x)
-
-# 2. Sequential
-model = nn.Sequential(
-    nn.Linear(5, 10),
-    nn.ReLU(),
-    nn.Linear(10, 2)
-)
-
-# 3. 优化器
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-```
-</details>
-
-<details>
-<summary>点击展开 训练循环自测答案</summary>
+<summary>点击展开参考答案</summary>
 
 1. 四步：zero_grad → 前向(算 pred) → loss + backward → step  
 2. 梯度会累积，导致更新方向错误、训练不稳定  
 3. 参考上面「完整代码示例」
 </details>
 
----
-
-## 五、学习时间分配建议
-
-| 时段 | 内容 | 时长 |
-|------|------|------|
-| 0:00–0:55 | nn.Module 与 nn.Linear（Linear→继承定义→Sequential→parameters→train/eval） | 55 分钟 |
-| 0:55–1:00 | 休息 | 5 分钟 |
-| 1:00–1:55 | 训练循环（损失函数→优化器→四步→线性回归完整示例） | 55 分钟 |
-| 1:55–2:00 | 独立写一遍线性回归脚本 | 5 分钟 |
+**检查清单**  
+- [ ] 能写出训练循环四步：zero_grad → 前向 → loss.backward → step  
+- [ ] 能独立写出一个「定义模型 + 训练循环」的完整脚本（线性回归即可）  
+- [ ] 理解为什么需要 `zero_grad()`  
+- [ ] 完成全部自测题  
 
 ---
 
-## 六、今日学习检查清单
-
-- [ ] 能继承 `nn.Module` 定义网络并实现 `forward`
-- [ ] 能使用 `nn.Linear`、`nn.ReLU`、`nn.Sequential`
-- [ ] 能写出训练循环四步：zero_grad → 前向 → loss.backward → step
-- [ ] 能独立写出一个「定义模型 + 训练循环」的完整脚本（线性回归即可）
-- [ ] 理解为什么需要 `zero_grad()`
-- [ ] 完成全部自测题
-
----
-
-## 七、与前后天的衔接
-
-- **Day 3**：训练循环四步的理论；今天用 PyTorch 实现。
-- **Day 4**：`backward()` 算梯度；今天配合 `optimizer.step()` 完成更新。
-- **Day 6**：batch、epoch、learning rate、过拟合等概念，会加深对训练的理解。
-- **verl**：训练大模型时，本质也是同样的「前向→loss→反向→更新」循环，只是模型和数据更复杂。
-
----
+**与前后天的衔接**
+- **Day 3**：训练循环四步的理论，今天用 PyTorch 实现。
+- **Day 4**：`backward()` 算梯度，今天配合 `optimizer.step()` 完成更新。
+- **Day 6**：讲 batch、epoch、过拟合等。
+- **verl**：训练大模型本质也是同一套「前向→loss→反向→更新」循环。
 
 *完成 Day 5 后，可以进入 Day 6：深度学习概念补充（batch、epoch、过拟合、正则化）。*

@@ -1,6 +1,19 @@
 # Day 8 详细学习指南：注意力机制与 Transformer
 
-> 预计时长：2 小时 | 目标：理解 self-attention 和 Transformer 的基本结构
+> 目标：理解 self-attention 和 Transformer 的基本结构
+
+---
+
+## 学习时间分配建议
+
+| 时段 | 内容 | 时长 |
+|------|------|------|
+| 0:00–0:55 | 第一部分：注意力机制（为什么需要→Q/K/V→Scaled Dot-Product→Self-Attention） | 55 分钟 |
+| 0:55–1:00 | 休息 | 5 分钟 |
+| 1:00–1:55 | 第二部分：Transformer 架构（Encoder/Decoder→Block 结构→Multi-Head→FFN/LayerNorm） | 55 分钟 |
+| 1:55–2:00 | 自测与检查 | 5 分钟 |
+
+**预计总时长：2 小时**
 
 ---
 
@@ -60,6 +73,26 @@
 - 10.1 注意力提示：理解「为什么需要注意力」
 - 10.2 注意力汇聚：注意力权重的直观
 - 10.3 注意力评分函数：Scaled Dot-Product 的数学形式
+
+### 1.4 自测与检查
+
+**自测题**  
+1. 在 Self-Attention 中，Q、K、V 从哪里来？它们的关系是什么？  
+2. 写出 Scaled Dot-Product Attention 的完整公式（含 softmax 和缩放）。  
+3. 为什么除以 √d_k？不除以会有什么问题？
+
+<details>
+<summary>点击展开参考答案</summary>
+
+1. Q、K、V 都由输入 X 通过线性变换得到：Q=XW_Q、K=XW_K、V=XW_V；三者都来自同一输入，但通过不同权重矩阵投影。  
+2. Attention(Q,K,V) = softmax(QK^T / √d_k) V  
+3. d_k 大时，QK^T 的值会很大，softmax 后梯度接近 0，导致梯度消失；除以 √d_k 使数值稳定。
+</details>
+
+**检查清单**  
+- [ ] 能解释 Query、Key、Value 的含义及在注意力中的作用  
+- [ ] 能写出 Scaled Dot-Product Attention 的公式  
+- [ ] 能解释为什么需要除以 √d_k  
 
 ---
 
@@ -121,74 +154,28 @@
 - 每个 Block 内部的 Attention + FFN 流程
 - 自回归生成时如何「只看前面」
 
----
+### 2.4 自测与检查
 
-## 三、自测题
-
-### 3.1 注意力机制自测
-
-1. **Q、K、V**：在 Self-Attention 中，Q、K、V 从哪里来？它们的关系是什么？
-2. **公式**：写出 Scaled Dot-Product Attention 的完整公式（含 softmax 和缩放）。
-3. **为什么除以 √d_k**：不除以会有什么问题？
-
-### 3.2 Transformer 自测（重点）
-
-1. **Block 结构**：能画出 Transformer Decoder 的一个 block，并标出 Multi-Head Attention、FFN、LayerNorm、Residual 的位置。
-2. **Encoder vs Decoder**：Encoder 和 Decoder 的注意力机制有何本质区别？
-3. **Multi-Head**：若 d_model=256、head=8，每个头的 d_k 和 d_v 是多少？
-
-### 3.3 参考答案
+**自测题**  
+1. 能画出 Transformer Decoder 的一个 block，并标出 Multi-Head Attention、FFN、LayerNorm、Residual 的位置。  
+2. Encoder 和 Decoder 的注意力机制有何本质区别？  
+3. 若 d_model=256、head=8，每个头的 d_k 和 d_v 是多少？
 
 <details>
-<summary>点击展开 注意力机制自测答案</summary>
-
-1. Q、K、V 都由输入 X 通过线性变换得到：Q=XW_Q、K=XW_K、V=XW_V；三者都来自同一输入，但通过不同权重矩阵投影。  
-2. Attention(Q,K,V) = softmax(QK^T / √d_k) V  
-3. d_k 大时，QK^T 的值会很大，softmax 后梯度接近 0，导致梯度消失；除以 √d_k 使数值稳定。
-</details>
-
-<details>
-<summary>点击展开 Transformer 自测答案</summary>
+<summary>点击展开参考答案</summary>
 
 1. 框图：输入 → [Multi-Head Attention + Residual + LayerNorm] → [FFN + Residual + LayerNorm] → 输出  
 2. Encoder 双向：每个位置可看所有位置；Decoder 因果：位置 i 只能看 1,…,i，用于自回归生成。  
 3. d_k = d_v = d_model / head = 256 / 8 = 32
 </details>
 
----
+**检查清单**  
+- [ ] 能区分 Encoder 与 Decoder 的注意力机制（双向 vs 因果）  
+- [ ] 能画出 Transformer Decoder 的一个 block，并说明各模块作用  
+- [ ] 能解释 Multi-Head Attention 的结构和动机  
+- [ ] 完成全部自测题  
 
-## 四、学习时间分配建议
-
-| 时段 | 内容 | 时长 |
-|------|------|------|
-| 0:00–0:55 | 注意力机制（为什么需要→Q/K/V→Scaled Dot-Product→Self-Attention） | 55 分钟 |
-| 0:55–1:00 | 休息 | 5 分钟 |
-| 1:00–1:55 | Transformer 架构（Encoder/Decoder→Block 结构→Multi-Head→FFN/LayerNorm） | 55 分钟 |
-| 1:55–2:00 | 完成自测题（重点：画出 Transformer block） | 5 分钟 |
-
----
-
-## 五、今日学习检查清单
-
-- [ ] 能解释 Query、Key、Value 的含义及在注意力中的作用
-- [ ] 能写出 Scaled Dot-Product Attention 的公式
-- [ ] 能解释为什么需要除以 √d_k
-- [ ] 能区分 Encoder 与 Decoder 的注意力机制（双向 vs 因果）
-- [ ] 能画出 Transformer Decoder 的一个 block，并说明各模块作用
-- [ ] 能解释 Multi-Head Attention 的结构和动机
-- [ ] 完成全部自测题
-
----
-
-## 六、与前后天的衔接
-
-- **Day 7**：第一周复习了神经网络、PyTorch 训练循环；注意力层和 FFN 都是「可学习的层」，训练方式相同。
-- **Day 9**：大语言模型基础，会讲到 LLM 的训练阶段（PT、SFT、RLHF）；今天学的 Transformer 是 LLM 的骨架。
-- **verl**：verl 训练的是基于 Transformer 的 LLM，理解 Attention 和 Block 结构后，能更好理解模型配置和 loss 计算。
-
----
-
-## 七、可选实践：手写 Attention 公式
+### 2.5 可选实践：手写 Attention 公式
 
 在 PyTorch 中实现一个简单的 Scaled Dot-Product Attention（不要求完整训练）：
 
@@ -219,5 +206,10 @@ print(weights.shape)  # (2, 4, 4)
 ```
 
 ---
+
+**与前后天的衔接**
+- **Day 7**：复习了神经网络与 PyTorch 训练循环，注意力层和 FFN 都是可学习的层。
+- **Day 9**：讲大语言模型基础（PT、SFT、RLHF），今天学的 Transformer 是 LLM 的骨架。
+- **verl**：训练的是基于 Transformer 的 LLM，理解 Attention 和 Block 结构后能更好理解模型配置和 loss 计算。
 
 *完成 Day 8 后，可以进入 Day 9：大语言模型基础。*

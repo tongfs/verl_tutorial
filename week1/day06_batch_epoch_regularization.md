@@ -1,6 +1,19 @@
 # Day 6 详细学习指南：深度学习概念补充
 
-> 预计时长：2 小时 | 目标：理解 batch、epoch、过拟合、正则化等概念
+> 目标：理解 batch、epoch、过拟合、正则化等概念
+
+---
+
+## 学习时间分配建议
+
+| 时段 | 内容 | 时长 |
+|------|------|------|
+| 0:00–0:55 | 第一部分：训练概念（batch→epoch→lr→lr_schedule→多 batch 循环） | 55 分钟 |
+| 0:55–1:00 | 休息 | 5 分钟 |
+| 1:00–1:55 | 第二部分：过拟合与正则化（过拟合→Dropout→L2→其他手段→train/val/test） | 55 分钟 |
+| 1:55–2:00 | 自测与检查（重点：batch size 和 lr 的影响） | 5 分钟 |
+
+**预计总时长：2 小时**
 
 ---
 
@@ -64,6 +77,26 @@
 - 理解指数加权平均（可选）
 - 学习率衰减（Learning rate decay）
 
+### 1.4 自测与检查
+
+**自测题**  
+1. batch_size 从 32 改为 256，对训练速度、收敛稳定性、显存占用各有何影响？  
+2. lr 过大和过小分别会导致什么现象？  
+3. 5000 样本、batch_size=128、训练 20 epoch，共多少次参数更新？（取整）
+
+<details>
+<summary>点击展开参考答案</summary>
+
+1. batch_size 增大：每次迭代算更多样本，梯度更稳定，但单次迭代更慢、显存占用更大  
+2. lr 过大：loss 震荡或发散；lr 过小：收敛慢、易卡局部最优  
+3. 5000/128≈39 次/epoch，20 epoch → 约 780 次更新
+</details>
+
+**检查清单**  
+- [ ] 能解释 batch、epoch、iteration 的区别与关系  
+- [ ] 能解释 batch size 和 learning rate 对训练的影响  
+- [ ] 知道常见的 lr schedule（warmup、衰减、cosine）  
+
 ---
 
 ## 二、第二部分：过拟合与正则化（约 1 小时）
@@ -124,80 +157,36 @@
 - 2023 课程中「过拟合」「正则化」或「深度学习」相关集
 - 重点：过拟合现象、Dropout 直观、L2 正则
 
----
+### 2.4 自测与检查
 
-## 三、自测题
-
-### 3.1 训练概念自测
-
-1. **Batch size 影响**：batch_size 从 32 改为 256，对训练速度、收敛稳定性、显存占用各有何影响？
-2. **Learning rate 影响**：lr 过大和过小分别会导致什么现象？
-3. **计算**：5000 样本、batch_size=128、训练 20 epoch，共多少次参数更新？（取整）
-
-### 3.2 过拟合与正则化自测（重点）
-
-1. **过拟合判断**：若训练准确率 99%、验证准确率 70%，可能是什么问题？如何缓解？
-2. **Dropout**：`nn.Dropout(0.3)` 的含义是什么？推理时要不要手动关闭？
-3. **L2 正则**：写出在 PyTorch 中给 Adam 优化器加 L2 正则的代码。
-
-### 3.3 参考答案
+**自测题**  
+1. 若训练准确率 99%、验证准确率 70%，可能是什么问题？如何缓解？  
+2. `nn.Dropout(0.3)` 的含义是什么？推理时要不要手动关闭？  
+3. 写出在 PyTorch 中给 Adam 优化器加 L2 正则的代码。
 
 <details>
-<summary>点击展开 训练概念自测答案</summary>
-
-1. batch_size 增大：每次迭代算更多样本，梯度更稳定，但单次迭代更慢、显存占用更大  
-2. lr 过大：loss 震荡或发散；lr 过小：收敛慢、易卡局部最优  
-3. 5000/128≈39 次/epoch，20 epoch → 约 780 次更新
-</details>
-
-<details>
-<summary>点击展开 过拟合与正则化自测答案</summary>
+<summary>点击展开参考答案</summary>
 
 1. 过拟合；可加大 Dropout、L2、早停、数据增强或简化模型  
 2. 训练时每个神经元 30% 概率置 0；推理时 `model.eval()` 会自动关闭 Dropout  
 3. `torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.01)`
 </details>
 
----
+**检查清单**  
+- [ ] 能区分过拟合与欠拟合，并画出 loss 曲线趋势  
+- [ ] 能解释 Dropout 的作用及 train/eval 模式下的区别  
+- [ ] 能在优化器中设置 weight_decay（L2 正则）  
+- [ ] 完成全部自测题  
 
-## 四、学习时间分配建议
+### 2.5 可选实践：带 Dropout 和 L2 的训练
 
-| 时段 | 内容 | 时长 |
-|------|------|------|
-| 0:00–0:55 | 训练概念（batch→epoch→lr→lr_schedule→多 batch 循环） | 55 分钟 |
-| 0:55–1:00 | 休息 | 5 分钟 |
-| 1:00–1:55 | 过拟合与正则化（过拟合→Dropout→L2→其他手段→train/val/test） | 55 分钟 |
-| 1:55–2:00 | 完成自测题（重点：batch size 和 lr 的影响） | 5 分钟 |
-
----
-
-## 五、今日学习检查清单
-
-- [ ] 能解释 batch、epoch、iteration 的区别与关系
-- [ ] 能解释 batch size 和 learning rate 对训练的影响
-- [ ] 知道常见的 lr schedule（warmup、衰减、cosine）
-- [ ] 能区分过拟合与欠拟合，并画出 loss 曲线趋势
-- [ ] 能解释 Dropout 的作用及 train/eval 模式下的区别
-- [ ] 能在优化器中设置 weight_decay（L2 正则）
-- [ ] 完成全部自测题
+在 Day 5 的线性回归或 2 层网络上：1）加 `nn.Dropout(0.2)` 在隐藏层后；2）优化器加 `weight_decay=0.01`；3）观察 loss 曲线变化（可与不加时对比）。
 
 ---
 
-## 六、与前后天的衔接
-
-- **Day 5**：训练循环是「单 batch」或全量；今天理解「多 batch、多 epoch」及 lr 的作用。
-- **Day 7**：第一周复习，会用到 batch、epoch、Dropout 等概念。
-- **verl**：配置中有 `train_batch_size`、`mini_batch_size`、`micro_batch_size`、`learning_rate` 等，理解今天内容后能更好调参。
-
----
-
-## 七、可选实践：带 Dropout 和 L2 的训练
-
-在 Day 5 的线性回归或 2 层网络上：
-1. 加 `nn.Dropout(0.2)` 在隐藏层后；
-2. 优化器加 `weight_decay=0.01`；
-3. 观察 loss 曲线变化（可与不加时对比）。
-
----
+**与前后天的衔接**
+- **Day 5**：单 batch 或全量训练循环，今天理解多 batch、多 epoch 及 lr 的作用。
+- **Day 7**：第一周复习会用到 batch、epoch、Dropout 等。
+- **verl**：配置中有 train_batch_size、learning_rate 等，理解今天内容后能更好调参。
 
 *完成 Day 6 后，可以进入 Day 7：第一周复习与小结。*
