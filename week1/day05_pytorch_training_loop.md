@@ -31,34 +31,34 @@
 
 ### 1.2 建议学习顺序
 
-1. **nn.Linear 全连接层**（15 分钟）  
-   - `nn.Linear(in_features, out_features)`：输入维度、输出维度  
-   - 内部：y = xW^T + b，W 和 b 自动初始化  
-   - 示例：`layer = nn.Linear(10, 5)`，输入 (batch, 10) → 输出 (batch, 5)  
+1. **nn.Linear 全连接层**（15 分钟）
+   - `nn.Linear(in_features, out_features)`：输入维度、输出维度
+   - 内部：y = xW^T + b，W 和 b 自动初始化
+   - 示例：`layer = nn.Linear(10, 5)`，输入 (batch, 10) → 输出 (batch, 5)
    - 练习：创建一个 3→4 的 Linear 层，传入 (2, 3) 的输入，看输出形状
 
-2. **继承 nn.Module 定义网络**（20 分钟）  
-   - `class MyNet(nn.Module):`  
-   - `__init__`：用 `super().__init__()`，定义 `self.layer1 = nn.Linear(...)`  
-   - `forward(self, x)`：写前向逻辑，`return` 最终输出  
-   - 注意：只写 `forward`，不要重写 `__call__`（父类已处理）  
+2. **继承 nn.Module 定义网络**（20 分钟）
+   - `class MyNet(nn.Module):`
+   - `__init__`：用 `super().__init__()`，定义 `self.layer1 = nn.Linear(...)`
+   - `forward(self, x)`：写前向逻辑，`return` 最终输出
+   - 注意：只写 `forward`，不要重写 `__call__`（父类已处理）
    - 练习：定义一个 2 层网络：输入 4 维 → 隐藏 8 维（ReLU）→ 输出 2 维
 
-3. **nn.Sequential**（10 分钟）  
-   - `nn.Sequential(layer1, layer2, ...)` 按顺序执行  
-   - 适合没有分支的简单网络  
+3. **nn.Sequential**（10 分钟）
+   - `nn.Sequential(layer1, layer2, ...)` 按顺序执行
+   - 适合没有分支的简单网络
    - 练习：用 Sequential 实现上面的 2 层网络
 
-4. **model.parameters() 与 state_dict**（10 分钟）  
-   - `model.parameters()`：生成器，遍历所有可学习参数（W、b）  
-   - `model.state_dict()`：字典，参数名→张量，用于保存/加载  
-   - 优化器需要：`optimizer = torch.optim.SGD(model.parameters(), lr=0.01)`  
+4. **model.parameters() 与 state_dict**（10 分钟）
+   - `model.parameters()`：生成器，遍历所有可学习参数（W、b）
+   - `model.state_dict()`：字典，参数名→张量，用于保存/加载
+   - 优化器需要：`optimizer = torch.optim.SGD(model.parameters(), lr=0.01)`
    - 练习：打印一个简单模型的 parameters 和 state_dict 的 keys
 
-5. **model.train() 与 model.eval()**（5 分钟）  
-   - `train()`：训练模式，Dropout 等会生效  
-   - `eval()`：评估模式，Dropout 关闭  
-   - 推理时记得 `model.eval()`  
+5. **model.train() 与 model.eval()**（5 分钟）
+   - `train()`：训练模式，Dropout 等会生效
+   - `eval()`：评估模式，Dropout 关闭
+   - 推理时记得 `model.eval()`
    - 练习：切换模式并理解区别（Day 6 会讲 Dropout）
 
 ### 1.3 参考资料
@@ -71,9 +71,9 @@
 
 ### 1.4 自测与检查
 
-**自测题**  
-1. 定义一个类 `TwoLayerNet`：输入 5 维 → Linear(5, 10) + ReLU → Linear(10, 2)，实现 `forward`。  
-2. 用 `nn.Sequential` 实现同样的网络。  
+**自测题**
+1. 定义一个类 `TwoLayerNet`：输入 5 维 → Linear(5, 10) + ReLU → Linear(10, 2)，实现 `forward`。
+2. 用 `nn.Sequential` 实现同样的网络。
 3. 写出把模型参数传给 Adam 优化器的代码。
 
 <details>
@@ -100,9 +100,9 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 ```
 </details>
 
-**检查清单**  
-- [ ] 能继承 `nn.Module` 定义网络并实现 `forward`  
-- [ ] 能使用 `nn.Linear`、`nn.ReLU`、`nn.Sequential`  
+**检查清单**
+- [ ] 能继承 `nn.Module` 定义网络并实现 `forward`
+- [ ] 能使用 `nn.Linear`、`nn.ReLU`、`nn.Sequential`
 
 ---
 
@@ -120,36 +120,36 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
 ### 2.2 建议学习顺序
 
-1. **损失函数**（10 分钟）  
-   - `nn.MSELoss()`：回归，均方误差  
-   - `nn.CrossEntropyLoss()`：分类，输入 logits（未 softmax），target 为类别索引  
-   - 用法：`criterion = nn.MSELoss()`，`loss = criterion(pred, target)`  
+1. **损失函数**（10 分钟）
+   - `nn.MSELoss()`：回归，均方误差
+   - `nn.CrossEntropyLoss()`：分类，输入 logits（未 softmax），target 为类别索引
+   - 用法：`criterion = nn.MSELoss()`，`loss = criterion(pred, target)`
    - 练习：手算一个简单 MSE，用 PyTorch 验证
 
-2. **优化器**（10 分钟）  
-   - `optimizer = torch.optim.SGD(model.parameters(), lr=0.01)`  
-   - `optimizer = torch.optim.Adam(model.parameters(), lr=0.001)`（更常用）  
-   - 优化器持有参数的引用，`step()` 时按梯度更新  
+2. **优化器**（10 分钟）
+   - `optimizer = torch.optim.SGD(model.parameters(), lr=0.01)`
+   - `optimizer = torch.optim.Adam(model.parameters(), lr=0.001)`（更常用）
+   - 优化器持有参数的引用，`step()` 时按梯度更新
    - 练习：创建模型和 Adam 优化器
 
-3. **训练循环四步**（20 分钟）  
-   - ① `optimizer.zero_grad()`：清零梯度（重要！否则会累积）  
-   - ② `output = model(input)`：前向  
-   - ③ `loss = criterion(output, target)`，`loss.backward()`：算 loss 并反向传播  
-   - ④ `optimizer.step()`：更新参数  
+3. **训练循环四步**（20 分钟）
+   - ① `optimizer.zero_grad()`：清零梯度（重要！否则会累积）
+   - ② `output = model(input)`：前向
+   - ③ `loss = criterion(output, target)`，`loss.backward()`：算 loss 并反向传播
+   - ④ `optimizer.step()`：更新参数
    - 练习：在一个 for 循环里写齐这四步
 
-4. **完整示例：线性回归**（15 分钟）  
-   - 数据：y = 2x + 1 + 噪声，构造 100 个点  
-   - 模型：`nn.Linear(1, 1)`  
-   - 训练：多个 epoch，每 epoch 遍历数据，四步更新  
-   - 目标：学出 w≈2, b≈1  
+4. **完整示例：线性回归**（15 分钟）
+   - 数据：y = 2x + 1 + 噪声，构造 100 个点
+   - 模型：`nn.Linear(1, 1)`
+   - 训练：多个 epoch，每 epoch 遍历数据，四步更新
+   - 目标：学出 w≈2, b≈1
    - 练习：完整跑通，打印训练前后的 w、b
 
-5. **可选：MNIST 简化版**（5 分钟）  
-   - 若时间充裕：用 `torchvision.datasets.MNIST` 加载数据  
-   - 模型：Flatten → Linear(784, 128) → ReLU → Linear(128, 10)  
-   - 损失：CrossEntropyLoss，优化器：Adam  
+5. **可选：MNIST 简化版**（5 分钟）
+   - 若时间充裕：用 `torchvision.datasets.MNIST` 加载数据
+   - 模型：Flatten → Linear(784, 128) → ReLU → Linear(128, 10)
+   - 损失：CrossEntropyLoss，优化器：Adam
    - 可留到复习时做
 
 ### 2.3 参考资料
@@ -195,24 +195,24 @@ print("训练后:", model.weight.item(), model.bias.item())
 
 ### 2.4 自测与检查
 
-**自测题**  
-1. 训练循环四步：请按正确顺序写出（用中文或代码均可）。  
-2. 为什么需要 zero_grad？若忘记调用，会发生什么？  
+**自测题**
+1. 训练循环四步：请按正确顺序写出（用中文或代码均可）。
+2. 为什么需要 zero_grad？若忘记调用，会发生什么？
 3. 不参考示例，独立写一个「线性回归」的完整训练脚本（可简化数据）。
 
 <details>
 <summary>点击展开参考答案</summary>
 
-1. 四步：zero_grad → 前向(算 pred) → loss + backward → step  
-2. 梯度会累积，导致更新方向错误、训练不稳定  
+1. 四步：zero_grad → 前向(算 pred) → loss + backward → step
+2. 梯度会累积，导致更新方向错误、训练不稳定
 3. 参考上面「完整代码示例」
 </details>
 
-**检查清单**  
-- [ ] 能写出训练循环四步：zero_grad → 前向 → loss.backward → step  
-- [ ] 能独立写出一个「定义模型 + 训练循环」的完整脚本（线性回归即可）  
-- [ ] 理解为什么需要 `zero_grad()`  
-- [ ] 完成全部自测题  
+**检查清单**
+- [ ] 能写出训练循环四步：zero_grad → 前向 → loss.backward → step
+- [ ] 能独立写出一个「定义模型 + 训练循环」的完整脚本（线性回归即可）
+- [ ] 理解为什么需要 `zero_grad()`
+- [ ] 完成全部自测题
 
 ---
 

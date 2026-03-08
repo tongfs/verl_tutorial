@@ -31,29 +31,29 @@
 
 ### 1.2 建议学习顺序
 
-1. **为什么需要注意力**（10 分钟）  
-   - 全连接层：每个位置只能看到固定窗口，无法灵活关注任意位置  
-   - RNN：顺序计算，难以并行，长序列易遗忘  
-   - 注意力：任意位置两两可交互，可并行，能显式建模「谁重要」  
+1. **为什么需要注意力**（10 分钟）
+   - 全连接层：每个位置只能看到固定窗口，无法灵活关注任意位置
+   - RNN：顺序计算，难以并行，长序列易遗忘
+   - 注意力：任意位置两两可交互，可并行，能显式建模「谁重要」
    - 练习：能说出「注意力机制」相比全连接/RNN 的一个核心优势
 
-2. **Query、Key、Value 直观理解**（15 分钟）  
-   - 检索类比：Q=「我要找什么」，K=「每条记录的索引」，V=「每条记录的内容」  
-   - 计算流程：Q 与每个 K 算相似度 → softmax 得权重 → 对 V 加权求和  
-   - 来源：Q、K、V 都由输入通过线性变换得到（W_Q、W_K、W_V）  
+2. **Query、Key、Value 直观理解**（15 分钟）
+   - 检索类比：Q=「我要找什么」，K=「每条记录的索引」，V=「每条记录的内容」
+   - 计算流程：Q 与每个 K 算相似度 → softmax 得权重 → 对 V 加权求和
+   - 来源：Q、K、V 都由输入通过线性变换得到（W_Q、W_K、W_V）
    - 练习：若序列长度 n=5，Q、K、V 的 shape 各是什么？（通常 (batch, n, d)）
 
-3. **Scaled Dot-Product Attention 公式**（20 分钟）  
-   - 评分：$\text{score} = QK^T$，表示 Q 与每个 K 的相似度  
-   - 缩放：除以 $\sqrt{d_k}$，防止 $d_k$ 大时 softmax 梯度消失  
-   - 权重：$\alpha = \text{softmax}(\text{score} / \sqrt{d_k})$  
-   - 输出：$\text{Output} = \alpha V$，即按权重对 V 加权求和  
+3. **Scaled Dot-Product Attention 公式**（20 分钟）
+   - 评分：$\text{score} = QK^T$，表示 Q 与每个 K 的相似度
+   - 缩放：除以 $\sqrt{d_k}$，防止 $d_k$ 大时 softmax 梯度消失
+   - 权重：$\alpha = \text{softmax}(\text{score} / \sqrt{d_k})$
+   - 输出：$\text{Output} = \alpha V$，即按权重对 V 加权求和
    - 练习：写出完整的 $\text{Attention}(Q,K,V)$ 公式（一行）
 
-4. **Self-Attention 自注意力**（10 分钟）  
-   - Q、K、V 都来自同一输入序列（不同线性变换）  
-   - 每个位置可以「看到」并关注序列中所有位置  
-   - 与 Cross-Attention 区别：后者 Q 来自一个序列，K/V 来自另一个  
+4. **Self-Attention 自注意力**（10 分钟）
+   - Q、K、V 都来自同一输入序列（不同线性变换）
+   - 每个位置可以「看到」并关注序列中所有位置
+   - 与 Cross-Attention 区别：后者 Q 来自一个序列，K/V 来自另一个
    - 练习：Self-Attention 中，若输入是「我 喜欢 猫」，每个词会关注哪些词？
 
 ### 1.3 参考资料
@@ -71,23 +71,23 @@
 
 ### 1.4 自测与检查
 
-**自测题**  
-1. 在 Self-Attention 中，Q、K、V 从哪里来？它们的关系是什么？  
-2. 写出 Scaled Dot-Product Attention 的完整公式（含 softmax 和缩放）。  
+**自测题**
+1. 在 Self-Attention 中，Q、K、V 从哪里来？它们的关系是什么？
+2. 写出 Scaled Dot-Product Attention 的完整公式（含 softmax 和缩放）。
 3. 为什么除以 $\sqrt{d_k}$？不除以会有什么问题？
 
 <details>
 <summary>点击展开参考答案</summary>
 
-1. Q、K、V 都由输入 X 通过线性变换得到：Q=XW_Q、K=XW_K、V=XW_V；三者都来自同一输入，但通过不同权重矩阵投影。  
-2. $\text{Attention}(Q,K,V) = \text{softmax}(QK^T / \sqrt{d_k}) V$  
+1. Q、K、V 都由输入 X 通过线性变换得到：Q=XW_Q、K=XW_K、V=XW_V；三者都来自同一输入，但通过不同权重矩阵投影。
+2. $\text{Attention}(Q,K,V) = \text{softmax}(QK^T / \sqrt{d_k}) V$
 3. $d_k$ 大时，$QK^T$ 的值会很大，softmax 后梯度接近 0，导致梯度消失；除以 $\sqrt{d_k}$ 使数值稳定。
 </details>
 
-**检查清单**  
-- [ ] 能解释 Query、Key、Value 的含义及在注意力中的作用  
-- [ ] 能写出 Scaled Dot-Product Attention 的公式  
-- [ ] 能解释为什么需要除以 $\sqrt{d_k}$  
+**检查清单**
+- [ ] 能解释 Query、Key、Value 的含义及在注意力中的作用
+- [ ] 能写出 Scaled Dot-Product Attention 的公式
+- [ ] 能解释为什么需要除以 $\sqrt{d_k}$
 
 ---
 
@@ -106,34 +106,34 @@
 
 ### 2.2 建议学习顺序
 
-1. **Encoder 与 Decoder 的区别**（15 分钟）  
-   - Encoder：双向注意力，每个位置可看左右，适合「理解」任务  
-   - Decoder：因果（Causal）注意力，位置 i 只能看 1,…,i，适合「生成」  
-   - GPT 是纯 Decoder：只有 decoder 层堆叠，自回归生成  
+1. **Encoder 与 Decoder 的区别**（15 分钟）
+   - Encoder：双向注意力，每个位置可看左右，适合「理解」任务
+   - Decoder：因果（Causal）注意力，位置 i 只能看 1,…,i，适合「生成」
+   - GPT 是纯 Decoder：只有 decoder 层堆叠，自回归生成
    - 练习：为什么 LLM 用 Decoder 而不是 Encoder？
 
-2. **一个 Transformer Block 的结构**（20 分钟）  
-   - 以 Decoder 为例：  
-     - 子层 1：Multi-Head Self-Attention + LayerNorm + Residual  
-     - 子层 2：FFN（Linear → ReLU/GELU → Linear）+ LayerNorm + Residual  
-   - 流程：x → Attention(x) + x → LayerNorm → FFN(...) + ... → LayerNorm → 输出  
+2. **一个 Transformer Block 的结构**（20 分钟）
+   - 以 Decoder 为例：
+     - 子层 1：Multi-Head Self-Attention + LayerNorm + Residual
+     - 子层 2：FFN（Linear → ReLU/GELU → Linear）+ LayerNorm + Residual
+   - 流程：x → Attention(x) + x → LayerNorm → FFN(...) + ... → LayerNorm → 输出
    - 练习：画出「一个 Decoder Block」的框图，标出 5 个模块
 
-3. **Multi-Head Attention**（15 分钟）  
-   - 把 Q、K、V 拆成 h 个头，每个头独立做 Attention  
-   - 输出：$\text{Concat}(\text{head}_1,\ldots,\text{head}_h) \to$ 线性变换  
-   - 作用：不同头可关注不同模式（如语法、指代、语义）  
+3. **Multi-Head Attention**（15 分钟）
+   - 把 Q、K、V 拆成 h 个头，每个头独立做 Attention
+   - 输出：$\text{Concat}(\text{head}_1,\ldots,\text{head}_h) \to$ 线性变换
+   - 作用：不同头可关注不同模式（如语法、指代、语义）
    - 练习：8 个头、$d_{\text{model}}=64$，每个头的 $d_k$ 是多少？（64/8=8）
 
-4. **FFN 与 LayerNorm**（5 分钟）  
-   - FFN：通常 d_model → 4×d_model → d_model，中间用 GELU  
-   - LayerNorm：对最后一维做归一化，使每层输出分布稳定  
+4. **FFN 与 LayerNorm**（5 分钟）
+   - FFN：通常 d_model → 4×d_model → d_model，中间用 GELU
+   - LayerNorm：对最后一维做归一化，使每层输出分布稳定
    - 练习：FFN 和 Attention 的输入输出维度有何不同？
 
-5. **整体架构：堆叠 N 个 Block**（5 分钟）  
-   - 输入：embedding + 位置编码  
-   - N 个 Block 堆叠  
-   - 输出：最后一层 hidden → 投影到词表大小 → logits  
+5. **整体架构：堆叠 N 个 Block**（5 分钟）
+   - 输入：embedding + 位置编码
+   - N 个 Block 堆叠
+   - 输出：最后一层 hidden → 投影到词表大小 → logits
    - 练习：能说出「从输入 token 到输出 logits」的完整数据流
 
 ### 2.3 参考资料
@@ -151,24 +151,24 @@
 
 ### 2.4 自测与检查
 
-**自测题**  
-1. 能画出 Transformer Decoder 的一个 block，并标出 Multi-Head Attention、FFN、LayerNorm、Residual 的位置。  
-2. Encoder 和 Decoder 的注意力机制有何本质区别？  
+**自测题**
+1. 能画出 Transformer Decoder 的一个 block，并标出 Multi-Head Attention、FFN、LayerNorm、Residual 的位置。
+2. Encoder 和 Decoder 的注意力机制有何本质区别？
 3. 若 $d_{\text{model}}=256$、$\text{head}=8$，每个头的 $d_k$ 和 $d_v$ 是多少？
 
 <details>
 <summary>点击展开参考答案</summary>
 
-1. 框图：输入 → [Multi-Head Attention + Residual + LayerNorm] → [FFN + Residual + LayerNorm] → 输出  
-2. Encoder 双向：每个位置可看所有位置；Decoder 因果：位置 i 只能看 1,…,i，用于自回归生成。  
+1. 框图：输入 → [Multi-Head Attention + Residual + LayerNorm] → [FFN + Residual + LayerNorm] → 输出
+2. Encoder 双向：每个位置可看所有位置；Decoder 因果：位置 i 只能看 1,…,i，用于自回归生成。
 3. $d_k = d_v = d_{\text{model}} / \text{head} = 256 / 8 = 32$
 </details>
 
-**检查清单**  
-- [ ] 能区分 Encoder 与 Decoder 的注意力机制（双向 vs 因果）  
-- [ ] 能画出 Transformer Decoder 的一个 block，并说明各模块作用  
-- [ ] 能解释 Multi-Head Attention 的结构和动机  
-- [ ] 完成全部自测题  
+**检查清单**
+- [ ] 能区分 Encoder 与 Decoder 的注意力机制（双向 vs 因果）
+- [ ] 能画出 Transformer Decoder 的一个 block，并说明各模块作用
+- [ ] 能解释 Multi-Head Attention 的结构和动机
+- [ ] 完成全部自测题
 
 ### 2.5 可选实践：手写 Attention 公式
 

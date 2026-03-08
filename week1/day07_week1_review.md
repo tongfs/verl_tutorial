@@ -74,13 +74,13 @@
 
 ### 1.3 自测与检查
 
-**自测题**  
+**自测题**
 从上表中任选 3–5 条，能解释或写出即通过（例如：训练循环四步、为什么需要 zero_grad、batch size 对训练的影响）。
 
-**检查清单**  
-- [ ] 能解释梯度下降公式、反向传播、训练循环四步  
-- [ ] 能解释 requires_grad、zero_grad、model.train()/eval()  
-- [ ] 能解释 batch size、learning rate、Dropout、weight_decay 的作用  
+**检查清单**
+- [ ] 能解释梯度下降公式、反向传播、训练循环四步
+- [ ] 能解释 requires_grad、zero_grad、model.train()/eval()
+- [ ] 能解释 batch size、learning rate、Dropout、weight_decay 的作用
 
 ---
 
@@ -220,7 +220,7 @@ for epoch in range(10):
 
 ### 2.4 自测与检查
 
-**检查清单**  
+**检查清单**
 完成实践后，确认以下能力：
 
 - [ ] 能加载数据并转为 Tensor

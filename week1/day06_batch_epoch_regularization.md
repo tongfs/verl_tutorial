@@ -31,31 +31,31 @@
 
 ### 1.2 建议学习顺序
 
-1. **Batch 与 Batch Size**（15 分钟）  
-   - 全量梯度：用全部数据算梯度 → 准确但慢、占内存  
-   - 随机梯度（SGD）：每次用 1 个样本 → 快但噪声大  
-   - 小批量（Mini-batch）：每次用 batch_size 个样本，折中  
-   - 常见 batch size：32、64、128、256；大模型可能上千  
+1. **Batch 与 Batch Size**（15 分钟）
+   - 全量梯度：用全部数据算梯度 → 准确但慢、占内存
+   - 随机梯度（SGD）：每次用 1 个样本 → 快但噪声大
+   - 小批量（Mini-batch）：每次用 batch_size 个样本，折中
+   - 常见 batch size：32、64、128、256；大模型可能上千
    - 练习：1000 个样本，batch_size=32，1 个 epoch 有多少次迭代？（1000/32≈31）
 
-2. **Epoch**（10 分钟）  
-   - 1 epoch = 把所有训练数据过一遍  
-   - 通常训练多个 epoch，直到 loss 收敛或验证集不再提升  
-   - 总迭代数 = epoch × (样本数 / batch_size)  
+2. **Epoch**（10 分钟）
+   - 1 epoch = 把所有训练数据过一遍
+   - 通常训练多个 epoch，直到 loss 收敛或验证集不再提升
+   - 总迭代数 = epoch × (样本数 / batch_size)
    - 练习：1000 样本、batch_size=64、训练 10 epoch，共多少次参数更新？
 
-3. **Learning Rate 学习率**（15 分钟）  
-   - 更新公式：θ ← θ − lr × ∇θ  
-   - lr 过大：loss 震荡、甚至发散  
-   - lr 过小：收敛慢、可能卡在局部最优  
-   - 常用范围：SGD 0.01~0.1，Adam 1e-4~1e-3  
+3. **Learning Rate 学习率**（15 分钟）
+   - 更新公式：θ ← θ − lr × ∇θ
+   - lr 过大：loss 震荡、甚至发散
+   - lr 过小：收敛慢、可能卡在局部最优
+   - 常用范围：SGD 0.01~0.1，Adam 1e-4~1e-3
    - 练习：画一张「lr 过大 / 适中 / 过小」时 loss 曲线的示意图（脑中或纸上）
 
-4. **Learning Rate Schedule**（15 分钟）  
-   - Warmup：训练初期 lr 从 0 线性升到目标值，稳定训练  
-   - 衰减：随 epoch 增加逐渐降低 lr，后期精细调参  
-   - Cosine：lr 按余弦曲线从高到低，常用于大模型  
-   - PyTorch：`torch.optim.lr_scheduler.StepLR`、`CosineAnnealingLR` 等  
+4. **Learning Rate Schedule**（15 分钟）
+   - Warmup：训练初期 lr 从 0 线性升到目标值，稳定训练
+   - 衰减：随 epoch 增加逐渐降低 lr，后期精细调参
+   - Cosine：lr 按余弦曲线从高到低，常用于大模型
+   - PyTorch：`torch.optim.lr_scheduler.StepLR`、`CosineAnnealingLR` 等
    - 练习：用 `StepLR` 每 5 个 epoch 将 lr 乘 0.5
 
 ### 1.3 参考资料
@@ -73,23 +73,23 @@
 
 ### 1.4 自测与检查
 
-**自测题**  
-1. batch_size 从 32 改为 256，对训练速度、收敛稳定性、显存占用各有何影响？  
-2. lr 过大和过小分别会导致什么现象？  
+**自测题**
+1. batch_size 从 32 改为 256，对训练速度、收敛稳定性、显存占用各有何影响？
+2. lr 过大和过小分别会导致什么现象？
 3. 5000 样本、batch_size=128、训练 20 epoch，共多少次参数更新？（取整）
 
 <details>
 <summary>点击展开参考答案</summary>
 
-1. batch_size 增大：每次迭代算更多样本，梯度更稳定，但单次迭代更慢、显存占用更大  
-2. lr 过大：loss 震荡或发散；lr 过小：收敛慢、易卡局部最优  
+1. batch_size 增大：每次迭代算更多样本，梯度更稳定，但单次迭代更慢、显存占用更大
+2. lr 过大：loss 震荡或发散；lr 过小：收敛慢、易卡局部最优
 3. 5000/128≈39 次/epoch，20 epoch → 约 780 次更新
 </details>
 
-**检查清单**  
-- [ ] 能解释 batch、epoch、iteration 的区别与关系  
-- [ ] 能解释 batch size 和 learning rate 对训练的影响  
-- [ ] 知道常见的 lr schedule（warmup、衰减、cosine）  
+**检查清单**
+- [ ] 能解释 batch、epoch、iteration 的区别与关系
+- [ ] 能解释 batch size 和 learning rate 对训练的影响
+- [ ] 知道常见的 lr schedule（warmup、衰减、cosine）
 
 ---
 
@@ -107,36 +107,36 @@
 
 ### 2.2 建议学习顺序
 
-1. **过拟合与欠拟合**（15 分钟）  
-   - 过拟合：训练 loss 低、验证 loss 高，模型「背题」  
-   - 欠拟合：训练和验证 loss 都高，模型能力不足  
-   - 直观：模型复杂度 vs 数据量，要匹配  
+1. **过拟合与欠拟合**（15 分钟）
+   - 过拟合：训练 loss 低、验证 loss 高，模型「背题」
+   - 欠拟合：训练和验证 loss 都高，模型能力不足
+   - 直观：模型复杂度 vs 数据量，要匹配
    - 练习：能画出「欠拟合 / 刚好 / 过拟合」时 train/val loss 随 epoch 的曲线趋势
 
-2. **Dropout**（20 分钟）  
-   - 训练时：每个神经元以概率 p 置 0，否则输出除以 (1−p) 保持期望  
-   - 推理时：不 dropout，所有神经元参与  
-   - PyTorch：`nn.Dropout(p=0.5)`，`model.eval()` 时自动关闭  
-   - 作用：打破神经元间的共适应，类似「集成」多子网络  
+2. **Dropout**（20 分钟）
+   - 训练时：每个神经元以概率 p 置 0，否则输出除以 (1−p) 保持期望
+   - 推理时：不 dropout，所有神经元参与
+   - PyTorch：`nn.Dropout(p=0.5)`，`model.eval()` 时自动关闭
+   - 作用：打破神经元间的共适应，类似「集成」多子网络
    - 练习：在 Day 5 的 2 层网络中加 `nn.Dropout(0.2)`，观察 train/eval 行为
 
-3. **L2 正则（权重衰减 Weight Decay）**（15 分钟）  
-   - 损失加正则项：L_total = L_task + λ Σ w²  
-   - 等价于：每次更新时对权重做衰减，抑制过大参数  
-   - PyTorch：`optimizer = Adam(..., weight_decay=0.01)`  
-   - 常用：1e-2 ~ 1e-5，大模型常用较小值  
+3. **L2 正则（权重衰减 Weight Decay）**（15 分钟）
+   - 损失加正则项：L_total = L_task + λ Σ w²
+   - 等价于：每次更新时对权重做衰减，抑制过大参数
+   - PyTorch：`optimizer = Adam(..., weight_decay=0.01)`
+   - 常用：1e-2 ~ 1e-5，大模型常用较小值
    - 练习：在优化器中加 weight_decay=0.01，对比训练曲线
 
-4. **其他正则手段**（5 分钟）  
-   - 早停（Early Stopping）：val loss 不再下降时停止  
-   - 数据增强：扩充数据多样性  
-   - 简化模型：减少层数、参数  
+4. **其他正则手段**（5 分钟）
+   - 早停（Early Stopping）：val loss 不再下降时停止
+   - 数据增强：扩充数据多样性
+   - 简化模型：减少层数、参数
    - 练习：能说出 2 种防止过拟合的方法
 
-5. **训练/验证/测试**（5 分钟）  
-   - 训练集：更新参数  
-   - 验证集：调超参、早停、选 checkpoint  
-   - 测试集：最终评估，不参与任何选择  
+5. **训练/验证/测试**（5 分钟）
+   - 训练集：更新参数
+   - 验证集：调超参、早停、选 checkpoint
+   - 测试集：最终评估，不参与任何选择
    - 练习：能解释为什么需要单独的验证集
 
 ### 2.3 参考资料
@@ -153,24 +153,24 @@
 
 ### 2.4 自测与检查
 
-**自测题**  
-1. 若训练准确率 99%、验证准确率 70%，可能是什么问题？如何缓解？  
-2. `nn.Dropout(0.3)` 的含义是什么？推理时要不要手动关闭？  
+**自测题**
+1. 若训练准确率 99%、验证准确率 70%，可能是什么问题？如何缓解？
+2. `nn.Dropout(0.3)` 的含义是什么？推理时要不要手动关闭？
 3. 写出在 PyTorch 中给 Adam 优化器加 L2 正则的代码。
 
 <details>
 <summary>点击展开参考答案</summary>
 
-1. 过拟合；可加大 Dropout、L2、早停、数据增强或简化模型  
-2. 训练时每个神经元 30% 概率置 0；推理时 `model.eval()` 会自动关闭 Dropout  
+1. 过拟合；可加大 Dropout、L2、早停、数据增强或简化模型
+2. 训练时每个神经元 30% 概率置 0；推理时 `model.eval()` 会自动关闭 Dropout
 3. `torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0.01)`
 </details>
 
-**检查清单**  
-- [ ] 能区分过拟合与欠拟合，并画出 loss 曲线趋势  
-- [ ] 能解释 Dropout 的作用及 train/eval 模式下的区别  
-- [ ] 能在优化器中设置 weight_decay（L2 正则）  
-- [ ] 完成全部自测题  
+**检查清单**
+- [ ] 能区分过拟合与欠拟合，并画出 loss 曲线趋势
+- [ ] 能解释 Dropout 的作用及 train/eval 模式下的区别
+- [ ] 能在优化器中设置 weight_decay（L2 正则）
+- [ ] 完成全部自测题
 
 ### 2.5 可选实践：带 Dropout 和 L2 的训练
 

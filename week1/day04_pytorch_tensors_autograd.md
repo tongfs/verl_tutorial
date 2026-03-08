@@ -32,34 +32,34 @@
 
 ### 1.2 建议学习顺序
 
-1. **创建张量**（15 分钟）  
-   - `torch.tensor([1, 2, 3])`、`torch.zeros(2, 3)`、`torch.ones(2, 3)`  
-   - `torch.arange(0, 10, 2)`、`torch.randn(2, 3)`（随机）  
-   - 指定 `dtype`：`torch.tensor([1.0, 2.0], dtype=torch.float32)`  
+1. **创建张量**（15 分钟）
+   - `torch.tensor([1, 2, 3])`、`torch.zeros(2, 3)`、`torch.ones(2, 3)`
+   - `torch.arange(0, 10, 2)`、`torch.randn(2, 3)`（随机）
+   - 指定 `dtype`：`torch.tensor([1.0, 2.0], dtype=torch.float32)`
    - 练习：创建一个形状 (3, 4) 的随机张量
 
-2. **张量属性**（10 分钟）  
-   - `.shape` 或 `.size()`：形状  
-   - `.dtype`：数据类型  
-   - `.device`：所在设备  
+2. **张量属性**（10 分钟）
+   - `.shape` 或 `.size()`：形状
+   - `.dtype`：数据类型
+   - `.device`：所在设备
    - 练习：打印上面创建张量的 shape、dtype、device
 
-3. **device：CPU 与 GPU**（10 分钟）  
-   - `x.device` 查看；`x.to('cuda')` 或 `x.cuda()` 移到 GPU  
-   - `torch.device('cuda' if torch.cuda.is_available() else 'cpu')`  
-   - 运算时参与运算的张量需在同一 device  
+3. **device：CPU 与 GPU**（10 分钟）
+   - `x.device` 查看；`x.to('cuda')` 或 `x.cuda()` 移到 GPU
+   - `torch.device('cuda' if torch.cuda.is_available() else 'cpu')`
+   - 运算时参与运算的张量需在同一 device
    - 练习：若有 GPU，把张量移到 cuda 并做一次加法
 
-4. **reshape 与 view**（10 分钟）  
-   - `x.reshape(2, 6)`、`x.view(2, 6)`（view 要求内存连续）  
-   - `x.flatten()` 或 `x.view(-1)` 展平  
-   - `-1` 表示自动推断：`x.view(2, -1)`  
+4. **reshape 与 view**（10 分钟）
+   - `x.reshape(2, 6)`、`x.view(2, 6)`（view 要求内存连续）
+   - `x.flatten()` 或 `x.view(-1)` 展平
+   - `-1` 表示自动推断：`x.view(2, -1)`
    - 练习：把 (4, 5) 变成 (10, 2)
 
-5. **矩阵与逐元素运算**（15 分钟）  
-   - 逐元素：`+`、`-`、`*`、`/`、`**`  
-   - 矩阵乘法：`A @ B` 或 `torch.mm(A, B)`  
-   - 广播：与 NumPy 规则相同  
+5. **矩阵与逐元素运算**（15 分钟）
+   - 逐元素：`+`、`-`、`*`、`/`、`**`
+   - 矩阵乘法：`A @ B` 或 `torch.mm(A, B)`
+   - 广播：与 NumPy 规则相同
    - 练习：两个 2×3 张量做逐元素乘；两个 2×3 和 3×2 做矩阵乘
 
 ### 1.3 参考资料
@@ -76,9 +76,9 @@
 
 ### 1.4 自测与检查
 
-**自测题**  
-1. 创建一个形状为 (2, 3, 4) 的张量，用 `reshape` 变成 (6, 4)。  
-2. 写出把张量 `x` 从 CPU 移到 GPU 的代码（若可用）。  
+**自测题**
+1. 创建一个形状为 (2, 3, 4) 的张量，用 `reshape` 变成 (6, 4)。
+2. 写出把张量 `x` 从 CPU 移到 GPU 的代码（若可用）。
 3. 计算 `A @ B`：A 形状 (2, 3)，B 形状 (3, 4)，结果形状是多少？
 
 <details>
@@ -98,10 +98,10 @@ C = A @ B  # 形状 (2, 4)
 ```
 </details>
 
-**检查清单**  
-- [ ] 能创建张量并指定 dtype、device  
-- [ ] 能使用 reshape/view 改变张量形状  
-- [ ] 能区分逐元素运算与矩阵乘法 `@`  
+**检查清单**
+- [ ] 能创建张量并指定 dtype、device
+- [ ] 能使用 reshape/view 改变张量形状
+- [ ] 能区分逐元素运算与矩阵乘法 `@`
 
 ---
 
@@ -118,31 +118,31 @@ C = A @ B  # 形状 (2, 4)
 
 ### 2.2 建议学习顺序
 
-1. **requires_grad**（10 分钟）  
-   - `x = torch.tensor([1.0, 2.0], requires_grad=True)`  
-   - 参与运算的张量，若有一个 requires_grad=True，结果也会追踪  
-   - `x.requires_grad` 查看  
+1. **requires_grad**（10 分钟）
+   - `x = torch.tensor([1.0, 2.0], requires_grad=True)`
+   - 参与运算的张量，若有一个 requires_grad=True，结果也会追踪
+   - `x.requires_grad` 查看
    - 练习：创建 requires_grad=True 的张量，做 y=x*2，看 y.requires_grad
 
-2. **简单 backward**（15 分钟）  
-   - `y = x ** 2`，`y.backward()`，则 `x.grad` 为 dy/dx  
-   - 注意：`backward()` 默认对标量调用，非标量需传 `gradient` 或先 `sum()`  
+2. **简单 backward**（15 分钟）
+   - `y = x ** 2`，`y.backward()`，则 `x.grad` 为 dy/dx
+   - 注意：`backward()` 默认对标量调用，非标量需传 `gradient` 或先 `sum()`
    - 练习：`x = torch.tensor(3.0, requires_grad=True)`，`y = x**2`，backward 后打印 x.grad（应为 6）
 
-3. **链式法则验证**（15 分钟）  
-   - `z = x*y`，`L = z**2`，backward 后看 x.grad、y.grad  
-   - 与 Day 2 链式法则对照：∂L/∂x = ∂L/∂z * ∂z/∂x  
+3. **链式法则验证**（15 分钟）
+   - `z = x*y`，`L = z**2`，backward 后看 x.grad、y.grad
+   - 与 Day 2 链式法则对照：∂L/∂x = ∂L/∂z * ∂z/∂x
    - 练习：手算验证 PyTorch 给出的梯度是否正确
 
-4. **梯度累积与清零**（10 分钟）  
-   - 多次 backward 时，梯度会**累加**到 .grad 上  
-   - 训练时每次迭代前需 `optimizer.zero_grad()` 清零（Day 5 详讲）  
+4. **梯度累积与清零**（10 分钟）
+   - 多次 backward 时，梯度会**累加**到 .grad 上
+   - 训练时每次迭代前需 `optimizer.zero_grad()` 清零（Day 5 详讲）
    - 练习：对同一计算图 backward 两次，观察 grad 是否翻倍
 
-5. **no_grad 与 detach**（10 分钟）  
-   - `with torch.no_grad():` 块内不追踪梯度，省内存、提速  
-   - 推理时通常用 `with torch.no_grad():`  
-   - `x.detach()` 得到不需要梯度的新张量  
+5. **no_grad 与 detach**（10 分钟）
+   - `with torch.no_grad():` 块内不追踪梯度，省内存、提速
+   - 推理时通常用 `with torch.no_grad():`
+   - `x.detach()` 得到不需要梯度的新张量
    - 练习：在 no_grad 块内做运算，确认结果无 grad
 
 ### 2.3 参考资料
@@ -155,9 +155,9 @@ C = A @ B  # 形状 (2, 4)
 
 ### 2.4 自测与检查
 
-**自测题**  
-1. 用 PyTorch 求梯度：设 `f(x) = x² + 2x`，在 x=3 处求 df/dx。（答案：2x+2 = 8）  
-2. 多元函数：设 `f(x, y) = x²y`，x=2, y=3。求 ∂f/∂x 和 ∂f/∂y。（答案：∂f/∂x=12，∂f/∂y=4）  
+**自测题**
+1. 用 PyTorch 求梯度：设 `f(x) = x² + 2x`，在 x=3 处求 df/dx。（答案：2x+2 = 8）
+2. 多元函数：设 `f(x, y) = x²y`，x=2, y=3。求 ∂f/∂x 和 ∂f/∂y。（答案：∂f/∂x=12，∂f/∂y=4）
 3. 写一段不超过 10 行的代码，对 `z = x*y + x**2` 在 x=1, y=2 处求 ∂z/∂x 和 ∂z/∂y。
 
 <details>
@@ -187,11 +187,11 @@ print(x.grad, y.grad)  # tensor(4.) tensor(1.)
 ```
 </details>
 
-**检查清单**  
-- [ ] 能对 `requires_grad=True` 的张量做运算并调用 `backward()`  
-- [ ] 能解释 `.grad` 的含义及梯度累积问题  
-- [ ] 能用 PyTorch 对简单函数（如 x²、x²y）求梯度  
-- [ ] 完成全部自测题  
+**检查清单**
+- [ ] 能对 `requires_grad=True` 的张量做运算并调用 `backward()`
+- [ ] 能解释 `.grad` 的含义及梯度累积问题
+- [ ] 能用 PyTorch 对简单函数（如 x²、x²y）求梯度
+- [ ] 完成全部自测题
 
 ---
 
